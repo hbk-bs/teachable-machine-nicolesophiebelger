@@ -1,16 +1,16 @@
-// Set up the canvas
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-// Set canvas size
+
 canvas.width = 800;
 canvas.height = 600;
 
-// Array to store raindrops
+
 const raindrops = [];
 const maxRaindrops = 100;
 
-// Raindrop class
+
 class Raindrop {
   constructor(x, y) {
     this.x = x;
@@ -28,41 +28,41 @@ class Raindrop {
   
   update() {
     if (!this.isFalling) {
-      // Grow in size until reaching max size
+    
       this.size += this.growthRate;
       
-      // Start falling when size reaches max
+      
       if (this.size >= this.maxSize) {
         this.isFalling = true;
       }
     } else {
-      // Update trail
+      
       this.trail.unshift({x: this.x, y: this.y, size: this.size});
       
-      // Limit trail length
+      
       if (this.trail.length > this.maxTrailLength) {
         this.trail.pop();
       }
       
-      // Move the raindrop
+    
       this.y += this.fallingSpeed;
       this.x += this.horizontalMovement;
       
-      // Increase falling speed with a small random factor
+      
       this.fallingSpeed += Math.random() * 0.05;
       
-      // Random slight change in horizontal direction
+      
       if (Math.random() < 0.05) {
         this.horizontalMovement = Math.random() * 0.8 - 0.4;
       }
     }
     
-    // Remove raindrop when it goes off-screen
+    
     return this.y < canvas.height + 50;
   }
   
   draw() {
-    // Draw trail
+    
     for (let i = 0; i < this.trail.length; i++) {
       const trailSegment = this.trail[i];
       const trailOpacity = (this.trail.length - i) / this.trail.length * this.opacity * 0.8;
@@ -79,11 +79,11 @@ class Raindrop {
       ctx.fill();
     }
     
-    // Draw the raindrop
+    
     ctx.beginPath();
     
     if (this.isFalling) {
-      // Teardrop shape for falling drops
+      
       ctx.ellipse(
         this.x, 
         this.y, 
@@ -92,14 +92,14 @@ class Raindrop {
         0, 0, Math.PI * 2
       );
     } else {
-      // Circle for stationary drops
+      
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     }
     
     ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
     ctx.fill();
     
-    // Add highlight
+    
     ctx.beginPath();
     ctx.arc(
       this.x - this.size * 0.3, 
@@ -112,7 +112,7 @@ class Raindrop {
   }
 }
 
-// Create new raindrops
+
 function createRaindrop() {
   if (raindrops.length < maxRaindrops) {
     const x = Math.random() * canvas.width;
